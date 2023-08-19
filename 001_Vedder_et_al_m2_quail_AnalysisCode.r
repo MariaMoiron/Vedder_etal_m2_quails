@@ -6,7 +6,7 @@
 
 
 ######################################################
-# DATA ANALYSIS OF BODY MASS DATA
+# DATA ANALYSIS OF BODY MASS DATA (Table S2)
 ######################################################
 
 # Loading packages
