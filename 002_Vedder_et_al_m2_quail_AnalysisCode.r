@@ -55,11 +55,11 @@ BURN <- 10000; THIN <- 10000
 (NITT <- BURN + THIN*nsamp)
 
 # Set prior
-prior1 <- list(R = list(V = diag(2)*5, nu = 2),
-                      G = list(G1 = list(V = diag(2)*5, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
-                               G2 = list(V = diag(2)*5, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
-                               G3 = list(V = diag(2)*5, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
-                               G4 = list(V = diag(2)*5, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000)))
+prior1 <- list(R = list(V = diag(2), nu = 2),
+               G = list(G1 = list(V = diag(2), nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
+                        G2 = list(V = diag(2), nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
+                        G3 = list(V = diag(2), nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
+                        G4 = list(V = diag(2), nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000)))
 
 prior2 <- list(R = list(V = diag(2)*100, nu = 2),
                G = list(G1 = list(V = diag(2)*100, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
