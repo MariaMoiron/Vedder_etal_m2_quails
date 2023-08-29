@@ -8,21 +8,21 @@
 # DATA ANALYSES OF MATERNAL BY ENVIRONMENT INTERACTIONS (Table S3)
 ######################################################
 
-# Loading packages
+# Load packages
 library(nadiv)
 library(MCMCglmm)
 library(tidyr)
 library(dplyr)
 library(ggplot2)
 
-# Loading phenotypic data
+# Load phenotypic data
 Dataset <- read.table("data.txt", header=T)
 
 #Response variable
-Data$body.mass=as.numeric(Data$mass.d0)
+Data$body.mass=as.numeric(Data$mass.d0) #change to the different body masses at different ages
 hist(Data$body.mass)
 
-Data = as.data.frame(Dataset %>% group_by(diet) %>% mutate(mass = as.numeric(scale(body.mass, scale = FALSE))))
+Data = as.data.frame(Dataset %>% group_by(diet) %>% mutate(mass = as.numeric(scale(body.mass, scale = FALSE)))) #Within-diet sd
 Data$mass = as.numeric(Data$mass)
 hist(Data$mass)
 
@@ -37,8 +37,8 @@ Data$motherR=as.factor(Data$mother.replicate)
 Data$fatherR=as.factor(Data$father.replicate)
 
 #Random effects
-Data$ID = as.factor(Data$Offspring.ID)
-Data$animal = as.factor(Data$Offspring.ID)
+Data$ID = as.factor(Data$offspring.ID)
+Data$animal = as.factor(Data$offspring.ID)
 Data$mother = as.factor(Data$mother.ID)
 Data$father=as.factor(Data$father.ID)
 
@@ -48,12 +48,12 @@ colnames(ped)[1] <- "animal"
 ped3=prunePed(ped, Data$animal, make.base=TRUE)
 my_inverse <- inverseA(ped3)$Ainv
 
-# Setting number of samples and iterations
+# Set number of samples and iterations
 nsamp <- 1000 
 BURN <- 10000; THIN <- 10000
 (NITT <- BURN + THIN*nsamp)
 
-# Setting prior
+# Set prior
 prior1 <- list(R = list(V = diag(2)*5, nu = 2),
                       G = list(G1 = list(V = diag(2)*5, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
                                G2 = list(V = diag(2)*5, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
@@ -79,7 +79,7 @@ mod <- MCMCglmm(mass~sex+year+f+motherL*fatherL+motherR+fatherR,
 
 summary(mod)
 
-# Assesing convergence 
+# Asses convergence 
 effectiveSize(mod$VCV)
 heidel.diag(mod$VCV)
 autocorr.diag(mod$VCV)
