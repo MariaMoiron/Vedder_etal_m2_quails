@@ -4,9 +4,9 @@
 
 # The code provided here is sufficient to replicate the analyses presented in the above paper
 
-######################################################
+################################################################################################
 # DATA ANALYSES OF HYBRID APPROACH TO TEST FOR MATERNAL BY ENVIRONMENT INTERACTIONS (Table S4)
-######################################################
+################################################################################################
 
 # Load packages
 library(nadiv)
@@ -16,7 +16,7 @@ library(dplyr)
 library(ggplot2)
 
 # Load phenotypic data
-Dataset <- read.table("data.txt", header=T)
+Dataset <- read.table("maternal_by_environemnt_interactions.txt", header=T)
 
 # Fixed effects
 Data$diet=as.factor(Data$chick.diet)
@@ -40,11 +40,7 @@ Data$body.mass=as.numeric(Data$mass.d0)
 #Data$body.mass=as.numeric(Data$mass.d7)
 hist(Data$body.mass)
 
-# within-subject centering
-df_scaled <- as.data.frame(Data %>% group_by(diet) %>% mutate(mass = as.numeric(scale(body.mass, scale = FALSE))))
-Data=df_scaled 
-hist(Data$mass, breaks= 20)
-
+# within-subject centering approach
 # to estimate average line mass
 df_scaled <- as.data.frame(Data %>%group_by(Data$motherL) %>% mutate(mean.mass.Line = as.numeric(mean(egg.mass))))
 Data=df_scaled
@@ -67,7 +63,7 @@ Data$sd.mass.Mother = as.numeric(Data$mean.mass.Mother-Data$mean.mass.R)
 Data$sd.mass.within.mother = as.numeric(Data$egg.mass-Data$mean.mass.Mother)
 
 # Load pedigree info
-ped<- read.table("quail.ped.txt",header=TRUE)
+ped<- read.table("pedigree.txt",header=TRUE)
 colnames(ped)[1] <- "animal"
 ped3=prunePed(ped, Data$animal, make.base=TRUE)
 my_inverse <- inverseA(ped3)$Ainv
@@ -103,12 +99,12 @@ effectiveSize(mod$VCV)
 heidel.diag(mod$VCV)
 autocorr.diag(mod$VCV)
 
-#Fixed effects
+# Fixed effects
 posterior.mode(mod$Sol)
 HPDinterval(mod$Sol)
 #plot(mod$Sol)
 
-#Random effects
+# Random effects
 round(posterior.mode(mod$VCV),3)
-round(HPDinterval(mod$VCV), 3)
+round(HPDinterval(mod$VCV),3)
 plot(mod$VCV)
