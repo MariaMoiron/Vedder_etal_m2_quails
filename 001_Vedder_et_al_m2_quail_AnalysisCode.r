@@ -4,9 +4,9 @@
 
 # The code provided here is sufficient to replicate the analyses presented in the above paper
 
-######################################################
+#######################################################################
 # DATA ANALYSIS OF BODY MASS GROWTH DATA (Table S2)
-######################################################
+#######################################################################
 
 # Load packages
 library(nadiv)
@@ -16,7 +16,7 @@ library(dplyr)
 library(ggplot2)
 
 # Load phenotypic data
-Data <- read.table("data.txt", header=T)
+Data <- read.table("growth_model.txt", header=T)
 
 # Response variable
 Data$mass = as.numeric(Data$mass)
@@ -41,7 +41,7 @@ Data$mother.ID = as.factor(Data$mother.ID)
 Data$father.ID=as.factor(Data$father.ID)
 
 # Load pedigree info
-ped<- read.table("quail.ped.txt",header=TRUE)
+ped<- read.table("pedigree.txt",header=TRUE)
 colnames(ped)[1] <- "animal"
 ped3=prunePed(ped, Data$animal, make.base=TRUE)
 str(ped3)
@@ -79,12 +79,12 @@ effectiveSize(mod$VCV)
 heidel.diag(mod$VCV)
 autocorr.diag(mod$VCV)
 
-#Fixed effects
+# Fixed effects
 posterior.mode(mod$Sol)
 HPDinterval(mod$Sol)
 #plot(mod$Sol)
 
-#Random effects
+# Random effects
 round(posterior.mode(mod$VCV),3)
 round(HPDinterval(mod$VCV), 3)
 plot(mod$VCV)
