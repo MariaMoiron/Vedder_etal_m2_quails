@@ -22,7 +22,7 @@ Dataset <- read.table("data.txt", header=T)
 Data$body.mass=as.numeric(Data$mass.d0) #change to the different body masses at different ages
 hist(Data$body.mass)
 
-Data = as.data.frame(Dataset %>% group_by(diet) %>% mutate(mass = as.numeric(scale(body.mass, scale = FALSE)))) #Within-diet sd
+Data = as.data.frame(Dataset %>% group_by(diet) %>% mutate(mass = as.numeric(scale(body.mass, scale = FALSE)))) #Within-diet mean centering
 Data$mass = as.numeric(Data$mass)
 hist(Data$mass)
 
@@ -79,7 +79,7 @@ mod <- MCMCglmm(mass~sex+year+f+motherL*fatherL+motherR+fatherR,
 
 summary(mod)
 
-# Asses convergence 
+# Assess convergence 
 effectiveSize(mod$VCV)
 heidel.diag(mod$VCV)
 autocorr.diag(mod$VCV)
