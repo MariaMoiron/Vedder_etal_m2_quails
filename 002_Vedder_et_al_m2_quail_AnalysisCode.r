@@ -40,6 +40,7 @@ Data$fatherR=as.factor(Data$father.replicate)
 Data$ID = as.factor(Data$offspring.ID)
 Data$animal = as.factor(Data$offspring.ID)
 Data$mother = as.factor(Data$mother.ID)
+Data$dam = as.factor(Data$mother.ID)
 Data$father=as.factor(Data$father.ID)
 
 #Load pedigree info
