@@ -2,7 +2,7 @@
 # Published in Evolution, 2023, doi: tba
 # Vedder O, Tschirren B, Postma E, Moiron M
 
-# The code provided here is sufficient to replicate the analtyses presented in the above paper
+# The code provided here is sufficient to replicate the analyses presented in the above paper
 
 ######################################################
 # DATA ANALYSIS OF BODY MASS GROWTH DATA (Table S2)
@@ -53,7 +53,7 @@ BURN <- 10000; THIN <- 10000
 (NITT <- BURN + THIN*nsamp)
 
 # Setting prior
-bivPEpriorNuk <- list(R = list(V = diag(1)*100, nu = 625),
+prior <- list(R = list(V = diag(1)*100, nu = 1.002),
                       G = list(G1 = list(V = diag(1)*100, nu = 1.002),
                                G2 = list(V = diag(1)*100, nu = 1.002),
                                G3 =  list(V = diag(1)*5, nu = 1.002),
@@ -65,10 +65,10 @@ mod<- MCMCglmm(mass~ageC*sex+f+ageC*diet+year+motherL*fatherL*diet+motherR+fathe
                    random = ~ ID +animal+pair+mother.ID+father.ID,
                    rcov = ~ units,
                    data = Data,
-                   prior =bivPEpriorNuk,
-                   ginverse=list(animal = my_inverse), #fit the pedigree information
+                   prior =prior,
+                   ginverse=list(animal = my_inverse),
                    family = "gaussian",
-                   nitt = NITT, thin = THIN, burnin = BURN#,
+                   nitt = NITT, thin = THIN, burnin = BURN,
                    #pr=TRUE
 )
 
