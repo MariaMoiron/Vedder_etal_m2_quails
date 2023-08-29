@@ -89,12 +89,12 @@ round(posterior.mode(mod$VCV),3)
 round(HPDinterval(mod$VCV), 3)
 plot(mod$VCV)
 
-h2=mod$VCV[,"animal"]/rowSums(mod$VCV)  #different way of estimating Rpt
+h2=mod$VCV[,"animal"]/rowSums(mod$VCV)
 mean(h2)###mean
 HPDinterval(h2) ###Calculate 95%CI
 plot(h2)
 
-rpt=(mod$VCV[,"animal"]+mod$VCV[,"ID"])/rowSums(mod$VCV)  #different way of estimating Rpt
+rpt=(mod$VCV[,"animal"]+mod$VCV[,"ID"])/rowSums(mod$VCV)
 mean(rpt)###mean
 HPDinterval(rpt) ###Calculate 95%CI
 plot(rpt)
