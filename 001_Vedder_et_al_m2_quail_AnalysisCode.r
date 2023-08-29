@@ -89,12 +89,14 @@ round(posterior.mode(mod$VCV),3)
 round(HPDinterval(mod$VCV), 3)
 plot(mod$VCV)
 
+#Estimate heritability
 h2=mod$VCV[,"animal"]/rowSums(mod$VCV)
-mean(h2)###mean
-HPDinterval(h2) ###Calculate 95%CI
+posterior.mode(h2)
+HPDinterval(h2)
 plot(h2)
 
+#Estimate repeatability
 rpt=(mod$VCV[,"animal"]+mod$VCV[,"ID"])/rowSums(mod$VCV)
-mean(rpt)###mean
-HPDinterval(rpt) ###Calculate 95%CI
+posterior.mode(rpt)
+HPDinterval(rpt)
 plot(rpt)
