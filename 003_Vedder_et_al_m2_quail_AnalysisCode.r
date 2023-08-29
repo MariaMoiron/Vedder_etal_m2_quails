@@ -74,11 +74,11 @@ BURN <- 10000; THIN <- 20000
 (NITT <- BURN + THIN*nsamp)
 
 # Set prior
-prior <- list(R = list(V = diag(2)*0.05, nu = 3),
-              G = list(G1 = list(V = diag(2)*0.05, nu = 3, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
-                       G2 = list(V = diag(2)*0.05, nu = 3, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
-                       G3 = list(V = diag(2)*0.05, nu = 3, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
-                       G4 = list(V = diag(2)*0.05, nu = 3, alpha.mu = c(0,0), alpha.V = diag(2)*1000)))
+prior <- list(R = list(V = diag(2), nu = 2),
+               G = list(G1 = list(V = diag(2), nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
+                        G2 = list(V = diag(2), nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
+                        G3 = list(V = diag(2), nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
+                        G4 = list(V = diag(2), nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000)))
 
 # Run model
 mod <- MCMCglmm(mass~sex+year+f+motherL*fatherL+motherR+fatherR,
