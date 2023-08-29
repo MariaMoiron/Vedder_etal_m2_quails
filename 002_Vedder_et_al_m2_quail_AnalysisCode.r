@@ -4,9 +4,9 @@
 
 # The code provided here is sufficient to replicate the analyses presented in the above paper
 
-######################################################
+#######################################################################################
 # DATA ANALYSES OF MATERNAL BY ENVIRONMENT INTERACTIONS (Table S3)
-######################################################
+#######################################################################################
 
 # Load packages
 library(nadiv)
@@ -16,7 +16,7 @@ library(dplyr)
 library(ggplot2)
 
 # Load phenotypic data
-Dataset <- read.table("data.txt", header=T)
+Dataset <- read.table("maternal_by_environemnt_interactions.txt", header=T)
 
 #Response variable
 Data$body.mass=as.numeric(Data$mass.d0) #change to the different body masses at different ages
@@ -26,7 +26,7 @@ Data = as.data.frame(Dataset %>% group_by(diet) %>% mutate(mass = as.numeric(sca
 Data$mass = as.numeric(Data$mass)
 hist(Data$mass)
 
-#Fixed effects
+# Fixed effects
 Data$diet=as.factor(Data$chick.diet)
 Data$sex= as.factor(Data$chick.sex)
 Data$year = as.factor(Data$year)
@@ -36,15 +36,15 @@ Data$fatherL=as.factor(Data$father.type)
 Data$motherR=as.factor(Data$mother.replicate)
 Data$fatherR=as.factor(Data$father.replicate)
 
-#Random effects
+# Random effects
 Data$ID = as.factor(Data$offspring.ID)
 Data$animal = as.factor(Data$offspring.ID)
 Data$mother = as.factor(Data$mother.ID)
 Data$dam = as.factor(Data$mother.ID)
 Data$father=as.factor(Data$father.ID)
 
-#Load pedigree info
-ped<- read.table("quail.ped.txt",header=TRUE)
+# Load pedigree info
+ped<- read.table("pedigree.txt",header=TRUE)
 colnames(ped)[1] <- "animal"
 ped3=prunePed(ped, Data$animal, make.base=TRUE)
 my_inverse <- inverseA(ped3)$Ainv
@@ -67,6 +67,7 @@ prior2 <- list(R = list(V = diag(2)*100, nu = 2),
                         G3 = list(V = diag(2)*100, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000),
                         G4 = list(V = diag(2)*100, nu = 2, alpha.mu = c(0,0), alpha.V = diag(2)*1000)))
 
+# Run model
 mod <- MCMCglmm(mass~sex+year+f+motherL*fatherL+motherR+fatherR,
                    random = ~ us(diet):animal + us(diet):dam+us(diet):mother+ us(diet):father,
                    rcov = ~ idh(diet):units,
@@ -85,12 +86,12 @@ effectiveSize(mod$VCV)
 heidel.diag(mod$VCV)
 autocorr.diag(mod$VCV)
 
-#Fixed effects
+# Fixed effects
 posterior.mode(mod$Sol)
 HPDinterval(mod$Sol)
 #plot(mod$Sol)
 
-#Random effects
+# Random effects
 round(posterior.mode(mod$VCV),3)
 round(HPDinterval(mod$VCV), 3)
 plot(mod$VCV)
