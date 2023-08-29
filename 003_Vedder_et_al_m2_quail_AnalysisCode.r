@@ -18,7 +18,7 @@ library(ggplot2)
 # Load phenotypic data
 Dataset <- read.table("data.txt", header=T)
 
-#Fixed effects
+# Fixed effects
 Data$diet=as.factor(Data$chick.diet)
 Data$sex= as.factor(Data$chick.sex)
 Data$year = as.factor(Data$year)
@@ -28,35 +28,34 @@ Data$fatherL=as.factor(Data$father.type)
 Data$motherR=as.factor(Data$mother.replicate)
 Data$fatherR=as.factor(Data$father.replicate)
 
-#Random effects
+# Random effects
 Data$ID = as.factor(Data$offspring.ID)
 Data$animal = as.factor(Data$offspring.ID)
 Data$dam = as.factor(Data$mother.ID)
 Data$mother = as.factor(Data$mother.ID)
 Data$father=as.factor(Data$father.ID)
 
-#Response variable
+# Response variable
 Data$body.mass=as.numeric(Data$mass.d0)
 #Data$body.mass=as.numeric(Data$mass.d7)
 hist(Data$body.mass)
 
-#within-subject centering
+# within-subject centering
 df_scaled <- as.data.frame(Data %>% group_by(diet) %>% mutate(mass = as.numeric(scale(body.mass, scale = FALSE))))
 Data=df_scaled 
 hist(Data$mass, breaks= 20)
 
-#to estimate average line mass
+# to estimate average line mass
 df_scaled <- as.data.frame(Data %>%group_by(Data$motherL) %>% mutate(mean.mass.Line = as.numeric(mean(egg.mass))))
 Data=df_scaled
 
-#to estimate average replicate mass
+# to estimate average replicate mass
 df_scaled <- as.data.frame(Data %>% group_by(motherR, motherL) %>% mutate(mean.mass.R = as.numeric(mean(egg.mass))))
 Data=df_scaled
 
-#to estimate average mother mass
+# to estimate average mother mass
 df_scaled <- as.data.frame(Data %>%group_by(motherR, motherL,mother) %>% mutate(mean.mass.Mother = as.numeric(mean(egg.mass))))
 Data=df_scaled
-
 
 # to estimate delta (average replicate - average line)
 Data$sd.mass.R = as.numeric(Data$mean.mass.R-Data$mean.mass.Line)
@@ -67,8 +66,7 @@ Data$sd.mass.Mother = as.numeric(Data$mean.mass.Mother-Data$mean.mass.R)
 # to estimate delta (observation - average mother)
 Data$sd.mass.within.mother = as.numeric(Data$egg.mass-Data$mean.mass.Mother)
 
-
-#Load pedigree info
+# Load pedigree info
 ped<- read.table("quail.ped.txt",header=TRUE)
 colnames(ped)[1] <- "animal"
 ped3=prunePed(ped, Data$animal, make.base=TRUE)
